@@ -2,6 +2,7 @@ import Header from "./components/Header";
 import Banner from "./components/Banner";
 import PostList from "./components/PostList";
 import Upload from "./components/Upload";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -9,7 +10,9 @@ export default function Home() {
       <div className="relative min-h-screen bg-gray-100">
         <Header />
         <Banner />
-        <PostList />
+        <Suspense fallback={<div>Loading posts...</div>}>
+          <PostList />
+        </Suspense>
       </div>
       <Upload />
     </>
