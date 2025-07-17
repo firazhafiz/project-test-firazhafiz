@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -54,7 +55,7 @@ const Header = () => {
           />
           <ul className="flex space-x-6">
             <li>
-              <a
+              <Link
                 href="/"
                 className={`text-gray-800 hover:text-orange-400 transition-colors duration-200 ${
                   pathname === "/" && !isPostActive
@@ -63,7 +64,7 @@ const Header = () => {
                 }`}
               >
                 Home
-              </a>
+              </Link>
             </li>
             <li>
               <a

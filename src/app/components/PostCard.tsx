@@ -2,6 +2,7 @@
 
 import { useInView } from "react-intersection-observer";
 import { Post } from "@/types";
+import Image from "next/image";
 
 interface PostCardProps {
   post: Post;
@@ -13,7 +14,7 @@ const PostCard = ({ post }: PostCardProps) => {
     threshold: 0.1,
   });
 
-  const getImageSrc = (imgArr: any[] | undefined) => {
+  const getImageSrc = (imgArr: { url: string }[] | undefined) => {
     if (Array.isArray(imgArr) && imgArr.length > 0 && imgArr[0]?.url) {
       const src = `/api/image-proxy?url=${encodeURIComponent(imgArr[0].url)}`;
       console.log("Image Src:", src);
@@ -38,7 +39,7 @@ const PostCard = ({ post }: PostCardProps) => {
       className="bg-white rounded-xl shadow-lg border border-slate-200 flex flex-col w-full max-w-[320px] h-auto mx-auto relative"
     >
       {inView ? (
-        <img
+        <Image
           src={getImageSrc(post.medium_image)}
           alt={post.title || "Post Image"}
           width={400}
@@ -47,8 +48,11 @@ const PostCard = ({ post }: PostCardProps) => {
           loading="lazy"
           onError={(e) => {
             console.log("Image Load Error:", e);
-            (e.target as HTMLImageElement).src = "/suitmedia.png";
-            (e.target as HTMLImageElement).onerror = null;
+            const target = e.target as HTMLImageElement;
+            if (target) {
+              target.src = "/suitmedia.png";
+              target.onerror = null;
+            }
           }}
         />
       ) : (

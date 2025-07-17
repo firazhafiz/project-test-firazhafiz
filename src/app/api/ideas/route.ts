@@ -9,6 +9,7 @@ export async function GET(request: Request) {
     const response = await axios.get(url);
     return NextResponse.json(response.data);
   } catch (error) {
+    console.error("Ideas API Error:", error);
     return NextResponse.json(
       { error: "Failed to fetch data" },
       { status: 500 }
