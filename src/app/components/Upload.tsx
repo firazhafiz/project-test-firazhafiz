@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { FaUpload } from "react-icons/fa"; // Ikon upload dari react-icons
+import { FaUpload } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 const Upload = () => {
@@ -9,8 +9,9 @@ const Upload = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null); // Ref untuk input file
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen && fileInputRef.current) {
@@ -20,7 +21,7 @@ const Upload = () => {
 
   const handleUploadClick = () => {
     setIsOpen(true);
-    setMessage(null); // Reset message saat modal dibuka
+    setMessage(null);
     setSelectedFile(null);
   };
 
@@ -30,6 +31,15 @@ const Upload = () => {
 
     if (!file) {
       setMessage("No file selected");
+      return;
+    }
+
+    // Validasi tipe MIME di klien
+    const allowedMimeTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (!allowedMimeTypes.includes(file.type)) {
+      setMessage(
+        `Invalid file type. Allowed types: ${allowedMimeTypes.join(", ")}`
+      );
       return;
     }
 
@@ -47,7 +57,7 @@ const Upload = () => {
       const result = await response.json();
       if (response.ok) {
         setMessage(`Image uploaded successfully. New URL: ${result.url}`);
-        // Tunggu event banner-updated-done dari Banner
+        setUploadedUrl(result.url);
         window.dispatchEvent(new Event("banner-updated"));
         let timeoutId: NodeJS.Timeout | null = null;
         const handleBannerDone = () => {
@@ -59,7 +69,6 @@ const Upload = () => {
           router.refresh();
         };
         window.addEventListener("banner-updated-done", handleBannerDone);
-        // Fallback timeout jika event tidak diterima dalam 5 detik
         timeoutId = setTimeout(() => {
           setIsLoading(false);
           setIsOpen(false);
@@ -70,10 +79,12 @@ const Upload = () => {
       } else {
         setIsLoading(false);
         setMessage(`Error: ${result.error}`);
+        setUploadedUrl(null);
       }
     } catch (error) {
       setIsLoading(false);
       setMessage("Failed to upload file");
+      setUploadedUrl(null);
       console.error("Upload error:", error);
     }
   };
@@ -98,9 +109,9 @@ const Upload = () => {
               <input
                 type="file"
                 id="fileInput"
-                accept="image/*"
+                accept="image/jpeg,image/png,image/jpg"
                 className="mb-4 text-slate-700"
-                ref={fileInputRef} // Hubungkan ref ke input
+                ref={fileInputRef}
                 onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
               />
               <div className="flex gap-2">
@@ -152,9 +163,17 @@ const Upload = () => {
               </div>
             </form>
             {!isLoading && message && (
-              <p className="mt-2 text-sm text-center text-green-600">
-                {message}
-              </p>
+              <div className="mt-2 text-sm text-center text-green-600">
+                <p>{message}</p>
+                {message.startsWith("Image uploaded successfully") &&
+                  uploadedUrl && (
+                    <img
+                      src={uploadedUrl}
+                      alt="Uploaded banner preview"
+                      className="mt-2 mx-auto rounded shadow max-h-40"
+                    />
+                  )}
+              </div>
             )}
             {isLoading && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 rounded-lg">

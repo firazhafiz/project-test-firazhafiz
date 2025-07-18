@@ -19,7 +19,6 @@ const Pagination = ({ currentPage, totalPages }: PaginationProps) => {
 
   return (
     <div className="flex justify-center space-x-2 mt-8">
-      {/* First */}
       <Link
         href={`/?page=1&size=${size}&sort=${sort}`}
         className={`px-3 py-1 rounded-lg border border-slate-300 text-slate-600 font-semibold transition-colors duration-150 ${

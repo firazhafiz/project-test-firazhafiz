@@ -18,8 +18,8 @@ export interface ApiResponse {
   meta: {
     current_page: number;
     from: number;
-    last_page: number; // Ini adalah pageCount
-    per_page: number; // Ini adalah pageSize
+    last_page: number;
+    per_page: number;
     to: number;
     total: number;
   };
