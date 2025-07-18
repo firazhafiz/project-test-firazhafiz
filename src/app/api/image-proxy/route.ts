@@ -44,7 +44,7 @@ export async function GET(request: Request) {
       if (error.response?.status === 403) {
         console.log("Access Denied, serving fallback");
         try {
-          const fallbackPath = path.resolve("./public/suitmedia.png");
+          const fallbackPath = path.resolve("");
           if (!fs.existsSync(fallbackPath)) {
             throw new Error("Fallback image not found");
           }
