@@ -10,7 +10,11 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
-    domains: ["assets.suitdev.com", "suitmedia-backend.suitdev.com"],
+    domains: [
+      "assets.suitdev.com",
+      "suitmedia-backend.suitdev.com",
+      "kcasobwnmaakclefwmkj.supabase.co",
+    ],
   },
 };
 

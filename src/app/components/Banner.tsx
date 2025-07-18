@@ -21,7 +21,7 @@ const Banner = () => {
     const fetchBanner = async () => {
       try {
         const response = await axios.get("/api/banner");
-        // Tambahkan query string unik agar browser ambil gambar terbaru
+        console.log("Banner API response:", response.data);
         setBannerImageUrl(response.data.url + "?ts=" + Date.now());
       } catch (error) {
         console.error("Failed to fetch banner:", error);
@@ -32,7 +32,10 @@ const Banner = () => {
     fetchBanner(); // Fetch sekali saat mount
 
     // Listen event custom agar update instan
-    const onBannerUpdated = () => fetchBanner();
+    const onBannerUpdated = () => {
+      console.log("Banner updated event triggered");
+      fetchBanner();
+    };
     window.addEventListener("banner-updated", onBannerUpdated);
 
     // Cleanup event listener saat komponen unmount
