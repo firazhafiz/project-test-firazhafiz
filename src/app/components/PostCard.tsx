@@ -19,9 +19,7 @@ const PostCard = ({ post }: PostCardProps) => {
 
   const getImageSrc = (imgArr: { url: string }[] | undefined) => {
     if (Array.isArray(imgArr) && imgArr.length > 0 && imgArr[0]?.url) {
-      const src = `/api/image-proxy?url=${encodeURIComponent(imgArr[0].url)}`;
-      console.log("Image Src:", src);
-      return src;
+      return imgArr[0].url; // Langsung pakai URL asli
     }
     return "";
   };
@@ -45,7 +43,7 @@ const PostCard = ({ post }: PostCardProps) => {
     >
       {inView ? (
         imgSrc && !imgError ? (
-          <Image
+          <img
             src={imgSrc}
             alt={post.title || "Post Image"}
             width={400}
