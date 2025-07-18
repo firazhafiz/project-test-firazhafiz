@@ -33,13 +33,12 @@ export async function POST(request: Request) {
     );
   }
 
-  const fileExt = file.name.split(".").pop();
   const fileName = `${Date.now()}-${file.name}`; // Nama unik berdasarkan timestamp dan nama asli
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
   try {
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("banners")
       .upload(fileName, buffer, {
         contentType: file.type,
@@ -52,14 +51,19 @@ export async function POST(request: Request) {
       .from("banners")
       .getPublicUrl(fileName);
     return NextResponse.json({ url: publicUrlData.publicUrl }, { status: 200 });
-  } catch (error: any) {
-    console.error("Upload error:", {
-      message: error.message,
-      code: error.code,
-    });
-    return NextResponse.json(
-      { error: `Failed to upload file: ${error.message}` },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Upload error:", error.message);
+      return NextResponse.json(
+        { error: `Failed to upload file: ${error.message}` },
+        { status: 500 }
+      );
+    } else {
+      console.error("Upload error:", error);
+      return NextResponse.json(
+        { error: `Failed to upload file.` },
+        { status: 500 }
+      );
+    }
   }
 }

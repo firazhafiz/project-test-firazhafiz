@@ -27,8 +27,12 @@ export async function GET() {
       .getPublicUrl(latestFile.name);
 
     return NextResponse.json({ url: publicUrlData.publicUrl });
-  } catch (error: any) {
-    console.error("Error fetching banner:", error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error fetching banner:", error.message);
+    } else {
+      console.error("Error fetching banner:", error);
+    }
     return NextResponse.json({ url: "/banner.jpg" }, { status: 500 });
   }
 }
