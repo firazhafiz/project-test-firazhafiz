@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { FaUpload } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const Upload = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -167,10 +168,12 @@ const Upload = () => {
                 <p>{message}</p>
                 {message.startsWith("Image uploaded successfully") &&
                   uploadedUrl && (
-                    <img
+                    <Image
                       src={uploadedUrl}
                       alt="Uploaded banner preview"
-                      className="mt-2 mx-auto rounded shadow max-h-40"
+                      width={320}
+                      height={160}
+                      className="mt-2 mx-auto rounded shadow max-h-40 object-contain"
                     />
                   )}
               </div>
