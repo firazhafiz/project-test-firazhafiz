@@ -16,7 +16,6 @@ const Banner = () => {
 
   const [bannerImageUrl, setBannerImageUrl] = useState<string | null>(null);
 
-  // Fetch gambar terbaru dari API
   useEffect(() => {
     const fetchBanner = async () => {
       try {
@@ -25,20 +24,18 @@ const Banner = () => {
         setBannerImageUrl(response.data.url + "?ts=" + Date.now());
       } catch (error) {
         console.error("Failed to fetch banner:", error);
-        setBannerImageUrl("/banner.jpg?ts=" + Date.now()); // Fallback jika API gagal
+        setBannerImageUrl("/banner.jpg?ts=" + Date.now());
       }
     };
 
-    fetchBanner(); // Fetch sekali saat mount
+    fetchBanner();
 
-    // Listen event custom agar update instan
     const onBannerUpdated = () => {
       console.log("Banner updated event triggered");
       fetchBanner();
     };
     window.addEventListener("banner-updated", onBannerUpdated);
 
-    // Cleanup event listener saat komponen unmount
     return () => {
       window.removeEventListener("banner-updated", onBannerUpdated);
     };

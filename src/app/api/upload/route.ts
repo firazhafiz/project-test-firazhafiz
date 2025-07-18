@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-// Ambil variabel lingkungan
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -11,7 +10,6 @@ if (!supabaseUrl || !supabaseServiceRoleKey) {
 
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-// Tipe MIME yang diizinkan
 const allowedMimeTypes = ["image/jpeg", "image/png", "image/jpg"];
 
 export async function POST(request: Request) {
@@ -21,7 +19,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
   }
 
-  // Validasi tipe MIME
   if (!allowedMimeTypes.includes(file.type)) {
     return NextResponse.json(
       {
@@ -33,7 +30,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const fileName = `${Date.now()}-${file.name}`; // Nama unik berdasarkan timestamp dan nama asli
+  const fileName = `${Date.now()}-${file.name}`;
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 

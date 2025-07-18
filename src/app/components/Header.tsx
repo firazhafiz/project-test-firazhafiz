@@ -21,11 +21,9 @@ const Header = () => {
       }
       setLastScrollY(currentScrollY);
 
-      // Cek apakah PostList sudah masuk viewport
       const postList = document.getElementById("post-list-section");
       if (postList) {
         const rect = postList.getBoundingClientRect();
-        // Jika bagian atas PostList sudah masuk viewport
         setIsPostActive(rect.top <= 80 && rect.bottom > 80);
       }
     };

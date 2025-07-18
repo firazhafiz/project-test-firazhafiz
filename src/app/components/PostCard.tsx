@@ -19,7 +19,7 @@ const PostCard = ({ post }: PostCardProps) => {
 
   const getImageSrc = (imgArr: { url: string }[] | undefined) => {
     if (Array.isArray(imgArr) && imgArr.length > 0 && imgArr[0]?.url) {
-      return imgArr[0].url; // Langsung pakai URL asli
+      return imgArr[0].url;
     }
     return "";
   };

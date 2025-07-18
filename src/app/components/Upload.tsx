@@ -35,7 +35,6 @@ const Upload = () => {
       return;
     }
 
-    // Validasi tipe MIME di klien
     const allowedMimeTypes = ["image/jpeg", "image/png", "image/jpg"];
     if (!allowedMimeTypes.includes(file.type)) {
       setMessage(

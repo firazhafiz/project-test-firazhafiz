@@ -8,7 +8,6 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const url = `https://suitmedia-backend.suitdev.com/api/ideas?${searchParams.toString()}`;
 
-  // Caching key per query
   const cacheKey = searchParams.toString();
   const now = Date.now();
   if (cache.has(cacheKey)) {
